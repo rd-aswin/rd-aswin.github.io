@@ -4,8 +4,13 @@ self.addEventListener('push', event => {
     const data = event.data ? event.data.json() : {};
     console.log('Push notification data:', data);
     
-    self.registration.showNotification(data.title || 'Default Title', {
+    const title = data.title || 'Default Title';
+    const options = {
         body: data.body || 'Default Body',
-        icon: '/notification-icon.png'
-    });
+        icon: data.icon || '/notification-icon.png'
+    };
+
+    event.waitUntil(
+        self.registration.showNotification(title, options)
+    );
 });
